@@ -2,7 +2,9 @@ import argparse
 import re
 import logging
 
-RE_dense = re.compile(r"dense\<\"0x[A-Z0-9]*\"\>")
+# eg: `dense<"0xFFFF..."> : tensor<384xi32>`
+# eg: `dense<[7031, 6266, 5765, ...]> : tensor<64xi32>`
+RE_dense = re.compile(r"dense\<[\"\[][0xA-Z0-9-,\ ]*[\"\]]\>")
 
 
 # TODO: is it robust enough?
@@ -26,11 +28,10 @@ def main(args):
             if match and len(match.group(0)) > args.threshold:
                 le, ri = match.span(0)
                 logging.info(
-                    f"{aline[:le]}dense<{generate_one(aline[ri:])}>{aline[ri:-1]} // NOTE: mlir_prettier.py applied"
+                    f"{aline[:le]}dense<{generate_one(aline[ri:])}>{aline[ri:-1]} // NOTE: mlir_prettier.py applied\n"
                 )
             else:
-                # last char is '\n'
-                logging.info(aline[:-1])
+                logging.info(f"{aline}")
 
 
 def cli():
@@ -58,7 +59,8 @@ def cli():
 
     file_handler = logging.FileHandler(_args.output, mode="w")
     file_handler.setLevel(logging.INFO)
-    # file_handler.terminator = ""
+    # manually deal terminator
+    file_handler.terminator = ""
     logging.basicConfig(
         handlers=[file_handler], level=logging.INFO, format="%(message)s"
     )
