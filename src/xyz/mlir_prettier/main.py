@@ -4,7 +4,7 @@ import logging
 
 # eg: `dense<"0xFFFF..."> : tensor<384xi32>`
 # eg: `dense<[7031, 6266, 5765, ...]> : tensor<64xi32>`
-RE_dense = re.compile(r"dense\<[\"\[][0xA-Z0-9-,\ ]*[\"\]]\>")
+RE_dense = re.compile(r"dense\<[\"\[][a-zA-Z0-9-,\ ]*[\"\]]\>")
 
 
 # TODO: is it robust enough?
