@@ -41,17 +41,25 @@ def _encode_src(src: str, src_idx: int = 0):
     src_barr = bytearray(src.encode())
     src_barr = list(src_barr)
     logging.info(
-        f"static char const file_{src_idx}[] = \n{_gen_bracket_list(src_barr)};"
+        f"static char const file_{src_idx}[] =\n{_gen_bracket_list(src_barr)};"
     )
 
 
 def main(args):
     with open(args.input, "r") as fp:
         src = fp.read()
+        src_idx = 0
         logging.info(header)
         logging.info(f"// src file: {os.path.basename(args.input)}")
-        logging.info(f"/*\n{src}\n*/")
-        _encode_src(src)
+        logging.info(rf"""
+#if __cplusplus
+static char const file_{src_idx}[] = R"(
+{src}
+)";
+#else""")
+        _encode_src(src, src_idx)
+        logging.info(rf"""
+#endif""")
         logging.info(tail)
 
 
