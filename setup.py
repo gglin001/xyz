@@ -18,6 +18,7 @@ if __name__ == "__main__":
         description="mini cli toolkit.",
         author="Allen Guo",
         author_email="guosonglin001@gmail.com",
+        url="https://github.com/gglin001/xyz",
         python_requires=">=3.8",
         install_requires=_get_requires(),
         package_dir={"": "src"},
@@ -25,6 +26,8 @@ if __name__ == "__main__":
         entry_points={
             "console_scripts": [
                 "mlir_prettier = xyz.mlir_prettier:cli",
+                "xyz.mlir_prettier = xyz.mlir_prettier:cli",
+                "xyz.cl2hpp = xyz.cl2hpp:cli",
             ]
         },
     )
