@@ -1,3 +1,4 @@
+import os
 import argparse
 import logging
 
@@ -7,7 +8,7 @@ import logging
 """
 
 header = r"""
-// auto generated from cl2hpp.
+// auto generated from xyz.cl2hpp.
 #pragma once
 
 #include <stddef.h>
@@ -48,7 +49,7 @@ def main(args):
     with open(args.input, "r") as fp:
         src = fp.read()
         logging.info(header)
-        logging.info(f"// src file: {args.input}")
+        logging.info(f"// src file: {os.path.basename(args.input)}")
         logging.info(f"/*\n{src}\n*/")
         encode_src(src)
         logging.info(tail)
@@ -65,12 +66,6 @@ def cli():
         "--output",
         "-o",
         type=str,
-    )
-    parse.add_argument(
-        "--threshold",
-        "-t",
-        type=int,
-        default=79,
     )
 
     _args = parse.parse_args()
