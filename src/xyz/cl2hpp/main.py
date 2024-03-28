@@ -26,22 +26,22 @@ tail = r"""
 """
 
 
-# {1, 1}
-def gen_bracket_list(alist: list):
+# {1, 1, 0}
+def _gen_bracket_list(alist: list):
     ret = "{"
-    # TODO: need a better loop
-    for item in alist[:-1]:
+    for item in alist:
         ret += f"{item}, "
-    ret += f"{alist[-1]}"
+    # always append a zero
+    ret += f"{0}"
     ret += "}"
     return ret
 
 
-def encode_src(src: str, src_idx: int = 0):
+def _encode_src(src: str, src_idx: int = 0):
     src_barr = bytearray(src.encode())
     src_barr = list(src_barr)
     logging.info(
-        f"static char const file_{src_idx}[] = \n{gen_bracket_list(src_barr)};"
+        f"static char const file_{src_idx}[] = \n{_gen_bracket_list(src_barr)};"
     )
 
 
@@ -51,7 +51,7 @@ def main(args):
         logging.info(header)
         logging.info(f"// src file: {os.path.basename(args.input)}")
         logging.info(f"/*\n{src}\n*/")
-        encode_src(src)
+        _encode_src(src)
         logging.info(tail)
 
 
