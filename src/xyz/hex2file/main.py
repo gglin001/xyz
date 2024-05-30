@@ -49,6 +49,7 @@ def cli():
     )
 
     _args = parse.parse_args()
+
     if not _args.output:
         _args.output = f"{_args.input}.unknown" if _args.no_xz else f"."
     if _args.no_xz and os.path.isdir(_args.output):

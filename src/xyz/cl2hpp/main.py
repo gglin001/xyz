@@ -77,6 +77,7 @@ def cli():
     )
 
     _args = parse.parse_args()
+
     if not _args.output:
         _args.output = f"{_args.input}.hpp"
     print(_args)

@@ -44,6 +44,7 @@ def cli():
         "--output",
         "-o",
         type=str,
+        help="output file",
     )
     parse.add_argument(
         "--no_xz",
@@ -52,6 +53,7 @@ def cli():
     )
 
     _args = parse.parse_args()
+
     if not _args.output:
         _args.output = f"{_args.input}.hex"
     print(_args)

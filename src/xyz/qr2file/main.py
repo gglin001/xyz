@@ -35,7 +35,8 @@ def main(args):
     input_bin = binascii.unhexlify(input_hex)
 
     if args.no_xz:
-        raise NotImplementedError("args.no_xz must be false")
+        with open(args.output, "wb") as fp_out:
+            fp_out.write(input_bin)
     else:
         tar_buffer = BytesIO()
         tar_buffer.write(input_bin)
@@ -57,6 +58,7 @@ def cli():
         "--output",
         "-o",
         type=str,
+        help="output dir",
     )
     parse.add_argument(
         "--no_xz",
@@ -65,10 +67,11 @@ def cli():
     )
 
     _args = parse.parse_args()
+
     if not _args.output:
-        _args.output = f"."
-    if not _args.no_xz:
-        raise NotImplementedError("-xz must be true")
+        _args.output = f"{_args.input}.unknown" if _args.no_xz else f"."
+    if _args.no_xz and os.path.isdir(_args.output):
+        _args.output = f"{_args.output}/qr2file.unknown"
     print(_args)
 
     main(_args)
