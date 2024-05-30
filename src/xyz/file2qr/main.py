@@ -38,8 +38,8 @@ def main(args):
         hex_bytes = binascii.hexlify(tar_buffer.read())
     print(f"len(hex_bytes) : {len(hex_bytes)}")
 
-    for i in range(0, len(hex_bytes), args.seg):
-        xx = hex_bytes[i : i + args.seg]
+    for i in range(0, len(hex_bytes), args.segment_size):
+        xx = hex_bytes[i : i + args.segment_size]
         fp = f"{args.output}/qr_{i}.png"
         print(f"created - {fp} , len {len(xx)}")
         qrcode.make(xx, version=args.qr_version).save(fp)
@@ -50,6 +50,7 @@ def cli():
     parse.add_argument(
         "input",
         type=str,
+        help="input file",
     )
     parse.add_argument(
         "--output",

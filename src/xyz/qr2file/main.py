@@ -53,6 +53,7 @@ def cli():
     parse.add_argument(
         "input",
         type=str,
+        help="input dir, expect `{args.input}/qr_*.png`",
     )
     parse.add_argument(
         "--output",

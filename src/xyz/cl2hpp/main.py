@@ -69,11 +69,13 @@ def cli():
     parse.add_argument(
         "input",
         type=str,
+        help="input file",
     )
     parse.add_argument(
         "--output",
         "-o",
         type=str,
+        help="output file",
     )
 
     _args = parse.parse_args()
