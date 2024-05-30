@@ -28,6 +28,7 @@ if __name__ == "__main__":
                 "mlir_prettier = xyz.mlir_prettier:cli",
                 "xyz.mlir_prettier = xyz.mlir_prettier:cli",
                 "xyz.cl2hpp = xyz.cl2hpp:cli",
+                "xyz.file2hex = xyz.file2hex:cli",
             ]
         },
     )
