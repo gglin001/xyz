@@ -1,5 +1,4 @@
 import argparse
-import logging
 import binascii
 import tarfile
 
@@ -12,20 +11,20 @@ convert hex str to file
 
 def main(args):
     with open(args.input, "rb") as fp_in:
-        input_buffer = BytesIO(fp_in.read())
-    input_buffer.seek(0)
+        input_hex = fp_in.read()
+    input_bytes = binascii.a2b_hex(input_hex)
 
-    input_hex = binascii.a2b_hex(input_buffer)
-    tar_buffer = BytesIO()
-    tar_buffer.write(input_hex)
-    tar_buffer.seek(0)
-
-    # mode = 'r:gz'
-    mode = "r:xz"
-    # mode = 'r:bz2'
-
-    tar = tarfile.open(fileobj=tar_buffer, mode=mode)
-    tar.extractall(args.output)
+    if args.xz:
+        tar_buffer = BytesIO()
+        tar_buffer.write(input_bytes)
+        tar_buffer.seek(0)
+        # mode = 'r:gz'
+        mode = "r:xz"
+        # mode = 'r:bz2'
+        tar = tarfile.open(fileobj=tar_buffer, mode=mode)
+        tar.extractall(args.output)
+    else:
+        raise NotImplementedError("args.xz must be true")
 
 
 def cli():

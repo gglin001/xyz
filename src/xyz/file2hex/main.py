@@ -1,5 +1,4 @@
 import argparse
-import logging
 import binascii
 import tarfile
 
@@ -32,7 +31,7 @@ def main(args):
     print(f"len(hex_bytes) : {len(hex_bytes)}")
 
     with open(args.output, "w") as fp_out:
-        fp_out.write(hex_bytes.hex())
+        fp_out.write(hex_bytes.decode())
 
 
 def cli():
