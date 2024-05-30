@@ -58,19 +58,20 @@ def cli():
         help="output dir",
     )
     parse.add_argument(
-        "-xz",
+        "--xz",
         action="store_false",
         default=True,
         help="do `tar cfJ` first",
     )
     parse.add_argument(
+        "--segment_size",
         "-seg",
         type=int,
         default=2300,
         help="segment size, default=2300, check qr code sepc forv more info",
     )
     parse.add_argument(
-        "-qr_version",
+        "--qr_version",
         type=int,
         default=40,
         help="qr_version, default=40",
@@ -79,8 +80,6 @@ def cli():
     _args = parse.parse_args()
     if not _args.output:
         _args.output = f"{_args.input}.qr"
-    if not _args.xz:
-        raise NotImplementedError("-xz must be true")
     print(_args)
 
     os.makedirs(_args.output, exist_ok=True)

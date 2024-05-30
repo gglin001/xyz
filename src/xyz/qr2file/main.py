@@ -16,8 +16,6 @@ except ImportError:
 convert qr code to file
 """
 
-# TODO: pyzbar seems not work well, add more better qrcode decode methods
-
 
 def main(args):
     fps = glob.glob(f"{args.input}/qr_*.png")
@@ -61,7 +59,7 @@ def cli():
         type=str,
     )
     parse.add_argument(
-        "-xz",
+        "--xz",
         action="store_false",
         default=True,
         help="do `tar cfJ` first",

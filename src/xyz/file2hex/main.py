@@ -46,7 +46,7 @@ def cli():
         type=str,
     )
     parse.add_argument(
-        "-xz",
+        "--xz",
         action="store_false",
         default=True,
         help="do `tar cfJ` first",
