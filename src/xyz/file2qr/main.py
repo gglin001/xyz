@@ -22,7 +22,7 @@ def main(args):
         input_buffer = BytesIO(fp_in.read())
     input_buffer.seek(0)
 
-    if args.xz:
+    if args.no_xz:
         tar_buffer = BytesIO()
         # mode = 'w:gz'
         mode = "w:xz"
@@ -58,10 +58,9 @@ def cli():
         help="output dir",
     )
     parse.add_argument(
-        "--xz",
-        action="store_false",
-        default=True,
-        help="do `tar cfJ` first",
+        "--no_xz",
+        action="store_true",
+        default=False,
     )
     parse.add_argument(
         "--segment_size",

@@ -15,7 +15,7 @@ def main(args):
         print(f"len(input_hex) : {len(input_hex)}")
     input_bin = binascii.unhexlify(input_hex)
 
-    if args.xz:
+    if args.no_xz:
         tar_buffer = BytesIO()
         tar_buffer.write(input_bin)
         tar_buffer.seek(0)
@@ -25,7 +25,8 @@ def main(args):
         tar = tarfile.open(fileobj=tar_buffer, mode=mode)
         tar.extractall(args.output)
     else:
-        raise NotImplementedError("args.xz must be true")
+        with open(args.output, "wb") as fp_out:
+            fp_out.write(input_bin)
 
 
 def cli():
@@ -40,17 +41,14 @@ def cli():
         type=str,
     )
     parse.add_argument(
-        "--xz",
-        action="store_false",
-        default=True,
-        help="do `tar cfJ` first",
+        "--no_xz",
+        action="store_true",
+        default=False,
     )
 
     _args = parse.parse_args()
     if not _args.output:
-        _args.output = f"."
-    if not _args.xz:
-        raise NotImplementedError("-xz must be true")
+        _args.output = f"." if _args.no_xz else f"{_args.input}.unknown"
     print(_args)
 
     main(_args)

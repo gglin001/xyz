@@ -14,7 +14,7 @@ def main(args):
         input_buffer = BytesIO(fp_in.read())
     input_buffer.seek(0)
 
-    if args.xz:
+    if args.no_xz:
         tar_buffer = BytesIO()
         # mode = 'w:gz'
         mode = "w:xz"
@@ -46,17 +46,14 @@ def cli():
         type=str,
     )
     parse.add_argument(
-        "--xz",
-        action="store_false",
-        default=True,
-        help="do `tar cfJ` first",
+        "--no_xz",
+        action="store_true",
+        default=False,
     )
 
     _args = parse.parse_args()
     if not _args.output:
         _args.output = f"{_args.input}.hex"
-    if not _args.xz:
-        raise NotImplementedError("-xz must be true")
     print(_args)
 
     main(_args)
