@@ -31,6 +31,7 @@ if __name__ == "__main__":
                 "xyz.file2hex = xyz.file2hex:cli",
                 "xyz.hex2file = xyz.hex2file:cli",
                 "xyz.file2qr = xyz.file2qr:cli",
+                "xyz.qr2file = xyz.qr2file:cli",
             ]
         },
     )
