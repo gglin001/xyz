@@ -35,6 +35,8 @@ def main(args):
     input_bin = binascii.unhexlify(input_hex)
 
     if args.no_xz:
+        raise NotImplementedError("args.no_xz must be false")
+    else:
         tar_buffer = BytesIO()
         tar_buffer.write(input_bin)
         tar_buffer.seek(0)
@@ -43,8 +45,6 @@ def main(args):
         # mode = 'r:bz2'
         tar = tarfile.open(fileobj=tar_buffer, mode=mode)
         tar.extractall(args.output)
-    else:
-        raise NotImplementedError("args.no_xz must be true")
 
 
 def cli():

@@ -15,6 +15,8 @@ def main(args):
     input_buffer.seek(0)
 
     if args.no_xz:
+        hex_bytes = binascii.hexlify(input_buffer.read())
+    else:
         tar_buffer = BytesIO()
         # mode = 'w:gz'
         mode = "w:xz"
@@ -26,8 +28,6 @@ def main(args):
         tar.close()
         tar_buffer.seek(0)
         hex_bytes = binascii.hexlify(tar_buffer.read())
-    else:
-        hex_bytes = binascii.hexlify(input_buffer.read())
     print(f"len(hex_bytes) : {len(hex_bytes)}")
 
     with open(args.output, "w") as fp_out:

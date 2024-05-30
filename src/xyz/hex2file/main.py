@@ -1,6 +1,7 @@
 import argparse
 import binascii
 import tarfile
+import os
 
 from io import BytesIO
 
@@ -16,6 +17,9 @@ def main(args):
     input_bin = binascii.unhexlify(input_hex)
 
     if args.no_xz:
+        with open(args.output, "wb") as fp_out:
+            fp_out.write(input_bin)
+    else:
         tar_buffer = BytesIO()
         tar_buffer.write(input_bin)
         tar_buffer.seek(0)
@@ -24,9 +28,6 @@ def main(args):
         # mode = 'r:bz2'
         tar = tarfile.open(fileobj=tar_buffer, mode=mode)
         tar.extractall(args.output)
-    else:
-        with open(args.output, "wb") as fp_out:
-            fp_out.write(input_bin)
 
 
 def cli():
@@ -39,6 +40,7 @@ def cli():
         "--output",
         "-o",
         type=str,
+        help="output dir",
     )
     parse.add_argument(
         "--no_xz",
@@ -48,7 +50,9 @@ def cli():
 
     _args = parse.parse_args()
     if not _args.output:
-        _args.output = f"." if _args.no_xz else f"{_args.input}.unknown"
+        _args.output = f"{_args.input}.unknown" if _args.no_xz else f"."
+    if _args.no_xz and os.path.isdir(_args.output):
+        _args.output = f"{_args.output}/hex2file.unknown"
     print(_args)
 
     main(_args)
