@@ -30,7 +30,7 @@ def main(args):
         mode = "w:xz"
         # mode = 'w:bz2'
         tar = tarfile.open(fileobj=tar_buffer, mode=mode)
-        tarinfo = tarfile.TarInfo(args.input)
+        tarinfo = tarfile.TarInfo(os.path.basename(args.input))
         tarinfo.size = len(input_buffer.getvalue())
         tar.addfile(tarinfo, input_buffer)
         tar.close()
