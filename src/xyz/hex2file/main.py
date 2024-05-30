@@ -12,7 +12,7 @@ convert hex str to file
 def main(args):
     with open(args.input, "rb") as fp_in:
         input_hex = fp_in.read()
-    input_bytes = binascii.a2b_hex(input_hex)
+    input_bytes = binascii.unhexlify(input_hex)
 
     if args.xz:
         tar_buffer = BytesIO()
