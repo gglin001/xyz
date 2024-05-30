@@ -15,6 +15,7 @@ convert file to qr code
 """
 
 # TODO: can we support bigger `-seg` size
+# TODO: replace `qrcode` with `zxing-cpp`
 
 
 def main(args):
