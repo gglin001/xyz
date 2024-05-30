@@ -14,6 +14,8 @@ except ImportError:
 convert file to qr code
 """
 
+# TODO: can we support bigger `-seg` size
+
 
 def main(args):
     with open(args.input, "rb") as fp_in:

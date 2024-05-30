@@ -8,9 +8,9 @@ from io import BytesIO
 
 try:
     from PIL import Image
-    from pyzbar.pyzbar import decode
+    import zxingcpp
 except ImportError:
-    raise ImportError("do `pip install pillow pyzbar && micromamba install zbar` first")
+    raise ImportError("do `pip install pillow zxing-cpp` first")
 
 """
 convert qr code to file
@@ -27,13 +27,13 @@ def main(args):
         fps, key=lambda x: int(os.path.basename(x).split("_")[1].split(".")[0])
     )
 
-    input_hex = b""
+    input_hex = ""
     for fp in fps:
         print(f"decoding from {fp} , curent len(input_hex): {len(input_hex)}")
-        input_decode = decode(Image.open(fp))
-        if not input_decode:
+        input_decode = zxingcpp.read_barcodes(Image.open(fp))
+        if len(input_decode) != 1:
             raise Exception("decode failed, early exit")
-        input_hex += input_decode[0].data
+        input_hex += input_decode[0].text
     input_bin = binascii.unhexlify(input_hex)
 
     if args.xz:
