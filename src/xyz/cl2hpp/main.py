@@ -4,7 +4,8 @@ import logging
 
 """"
 - opencl kernel code to hpp
-- parse hpp to kernel code back(maybe in another tool), TODO
+- TODO: parse hpp to kernel code back(maybe in another tool)
+- TODO: add example
 """
 
 header = r"""
