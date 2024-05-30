@@ -6,7 +6,7 @@ import tarfile
 from io import BytesIO
 
 """
-convert file to hex str
+convert hex str to file
 """
 
 
@@ -15,24 +15,17 @@ def main(args):
         input_buffer = BytesIO(fp_in.read())
     input_buffer.seek(0)
 
-    if args.xz:
-        tar_buffer = BytesIO()
-        # mode = 'w:gz'
-        mode = "w:xz"
-        # mode = 'w:bz2'
-        tar = tarfile.open(fileobj=tar_buffer, mode=mode)
-        tarinfo = tarfile.TarInfo(args.input)
-        tarinfo.size = len(input_buffer.getvalue())
-        tar.addfile(tarinfo, input_buffer)
-        tar.close()
-        tar_buffer.seek(0)
-        hex_bytes = binascii.hexlify(tar_buffer.read())
-    else:
-        hex_bytes = binascii.hexlify(input_buffer.read())
-    print(f"len(hex_bytes) : {len(hex_bytes)}")
+    input_hex = binascii.a2b_hex(input_buffer)
+    tar_buffer = BytesIO()
+    tar_buffer.write(input_hex)
+    tar_buffer.seek(0)
 
-    with open(args.output, "w") as fp_out:
-        fp_out.write(hex_bytes.hex())
+    # mode = 'r:gz'
+    mode = "r:xz"
+    # mode = 'r:bz2'
+
+    tar = tarfile.open(fileobj=tar_buffer, mode=mode)
+    tar.extractall(args.output)
 
 
 def cli():
@@ -55,7 +48,7 @@ def cli():
 
     _args = parse.parse_args()
     if not _args.output:
-        _args.output = f"{_args.input}.hex"
+        _args.output = f"."
     if not _args.xz:
         raise NotImplementedError("-xz must be true")
     print(_args)
