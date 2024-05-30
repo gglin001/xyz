@@ -41,7 +41,7 @@ def cli():
         "--output",
         "-o",
         type=str,
-        help="output dir",
+        help="output dir or file(--no_xz)",
     )
     parse.add_argument(
         "--no_xz",
