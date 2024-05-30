@@ -25,7 +25,6 @@ if __name__ == "__main__":
         packages=find_packages(where="src"),
         entry_points={
             "console_scripts": [
-                "mlir_prettier = xyz.mlir_prettier:cli",
                 "xyz.mlir_prettier = xyz.mlir_prettier:cli",
                 "xyz.cl2hpp = xyz.cl2hpp:cli",
                 "xyz.file2hex = xyz.file2hex:cli",

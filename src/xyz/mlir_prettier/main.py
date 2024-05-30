@@ -28,7 +28,7 @@ def main(args):
             if match and len(match.group(0)) > args.threshold:
                 le, ri = match.span(0)
                 logging.info(
-                    f"{aline[:le]}dense<{generate_one(aline[ri:])}>{aline[ri:-1]} // NOTE: mlir_prettier.py applied\n"
+                    f"{aline[:le]}dense<{generate_one(aline[ri:])}>{aline[ri:-1]} // NOTE: xyz.mlir_prettier applied\n"
                 )
             else:
                 logging.info(f"{aline}")
