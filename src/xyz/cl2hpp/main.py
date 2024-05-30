@@ -4,7 +4,8 @@ import logging
 
 """"
 - opencl kernel code to hpp
-- parse hpp to kernel code back(maybe in another tool), TODO
+- TODO: parse hpp to kernel code back(maybe in another tool)
+- TODO: add example
 """
 
 header = r"""
@@ -69,14 +70,17 @@ def cli():
     parse.add_argument(
         "input",
         type=str,
+        help="input file",
     )
     parse.add_argument(
         "--output",
         "-o",
         type=str,
+        help="output file",
     )
 
     _args = parse.parse_args()
+
     if not _args.output:
         _args.output = f"{_args.input}.hpp"
     print(_args)

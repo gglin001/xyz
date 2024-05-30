@@ -14,13 +14,17 @@ except ImportError:
 convert file to qr code
 """
 
+# TODO: can we support bigger `-seg` size
+
 
 def main(args):
     with open(args.input, "rb") as fp_in:
         input_buffer = BytesIO(fp_in.read())
     input_buffer.seek(0)
 
-    if args.xz:
+    if args.no_xz:
+        hex_bytes = binascii.hexlify(input_buffer.read())
+    else:
         tar_buffer = BytesIO()
         # mode = 'w:gz'
         mode = "w:xz"
@@ -32,12 +36,10 @@ def main(args):
         tar.close()
         tar_buffer.seek(0)
         hex_bytes = binascii.hexlify(tar_buffer.read())
-    else:
-        hex_bytes = binascii.hexlify(input_buffer.read())
     print(f"len(hex_bytes) : {len(hex_bytes)}")
 
-    for i in range(0, len(hex_bytes), args.seg):
-        xx = hex_bytes[i : i + args.seg]
+    for i in range(0, len(hex_bytes), args.segment_size):
+        xx = hex_bytes[i : i + args.segment_size]
         fp = f"{args.output}/qr_{i}.png"
         print(f"created - {fp} , len {len(xx)}")
         qrcode.make(xx, version=args.qr_version).save(fp)
@@ -48,6 +50,7 @@ def cli():
     parse.add_argument(
         "input",
         type=str,
+        help="input file",
     )
     parse.add_argument(
         "--output",
@@ -56,29 +59,28 @@ def cli():
         help="output dir",
     )
     parse.add_argument(
-        "-xz",
-        action="store_false",
-        default=True,
-        help="do `tar cfJ` first",
+        "--no_xz",
+        action="store_true",
+        default=False,
     )
     parse.add_argument(
+        "--segment_size",
         "-seg",
         type=int,
         default=2300,
         help="segment size, default=2300, check qr code sepc forv more info",
     )
     parse.add_argument(
-        "-qr_version",
+        "--qr_version",
         type=int,
         default=40,
         help="qr_version, default=40",
     )
 
     _args = parse.parse_args()
+
     if not _args.output:
         _args.output = f"{_args.input}.qr"
-    if not _args.xz:
-        raise NotImplementedError("-xz must be true")
     print(_args)
 
     os.makedirs(_args.output, exist_ok=True)

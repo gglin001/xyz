@@ -8,15 +8,13 @@ from io import BytesIO
 
 try:
     from PIL import Image
-    from pyzbar.pyzbar import decode
+    import zxingcpp
 except ImportError:
-    raise ImportError("do `pip install pillow pyzbar && micromamba install zbar` first")
+    raise ImportError("do `pip install pillow zxing-cpp` first")
 
 """
 convert qr code to file
 """
-
-# TODO: pyzbar seems not work well, add more better qrcode decode methods
 
 
 def main(args):
@@ -27,16 +25,19 @@ def main(args):
         fps, key=lambda x: int(os.path.basename(x).split("_")[1].split(".")[0])
     )
 
-    input_hex = b""
+    input_hex = ""
     for fp in fps:
         print(f"decoding from {fp} , curent len(input_hex): {len(input_hex)}")
-        input_decode = decode(Image.open(fp))
-        if not input_decode:
+        input_decode = zxingcpp.read_barcodes(Image.open(fp))
+        if len(input_decode) != 1:
             raise Exception("decode failed, early exit")
-        input_hex += input_decode[0].data
+        input_hex += input_decode[0].text
     input_bin = binascii.unhexlify(input_hex)
 
-    if args.xz:
+    if args.no_xz:
+        with open(args.output, "wb") as fp_out:
+            fp_out.write(input_bin)
+    else:
         tar_buffer = BytesIO()
         tar_buffer.write(input_bin)
         tar_buffer.seek(0)
@@ -45,8 +46,6 @@ def main(args):
         # mode = 'r:bz2'
         tar = tarfile.open(fileobj=tar_buffer, mode=mode)
         tar.extractall(args.output)
-    else:
-        raise NotImplementedError("args.xz must be true")
 
 
 def cli():
@@ -54,24 +53,26 @@ def cli():
     parse.add_argument(
         "input",
         type=str,
+        help="input dir, expect `{args.input}/qr_*.png`",
     )
     parse.add_argument(
         "--output",
         "-o",
         type=str,
+        help="output dir or file(--no_xz)",
     )
     parse.add_argument(
-        "-xz",
-        action="store_false",
-        default=True,
-        help="do `tar cfJ` first",
+        "--no_xz",
+        action="store_true",
+        default=False,
     )
 
     _args = parse.parse_args()
+
     if not _args.output:
-        _args.output = f"."
-    if not _args.xz:
-        raise NotImplementedError("-xz must be true")
+        _args.output = f"{_args.input}.unknown" if _args.no_xz else f"."
+    if _args.no_xz and os.path.isdir(_args.output):
+        _args.output = f"{_args.output}/qr2file.unknown"
     print(_args)
 
     main(_args)

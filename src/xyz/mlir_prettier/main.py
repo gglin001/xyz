@@ -28,7 +28,7 @@ def main(args):
             if match and len(match.group(0)) > args.threshold:
                 le, ri = match.span(0)
                 logging.info(
-                    f"{aline[:le]}dense<{generate_one(aline[ri:])}>{aline[ri:-1]} // NOTE: mlir_prettier.py applied\n"
+                    f"{aline[:le]}dense<{generate_one(aline[ri:])}>{aline[ri:-1]} // NOTE: xyz.mlir_prettier applied\n"
                 )
             else:
                 logging.info(f"{aline}")
@@ -39,11 +39,13 @@ def cli():
     parse.add_argument(
         "input",
         type=str,
+        help="input file",
     )
     parse.add_argument(
         "--output",
         "-o",
         type=str,
+        help="output file",
     )
     parse.add_argument(
         "--threshold",
@@ -53,6 +55,7 @@ def cli():
     )
 
     _args = parse.parse_args()
+
     if not _args.output:
         _args.output = f"{_args.input}.pretty.mlir"
     print(_args)

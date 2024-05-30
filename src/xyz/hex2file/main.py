@@ -1,6 +1,7 @@
 import argparse
 import binascii
 import tarfile
+import os
 
 from io import BytesIO
 
@@ -15,7 +16,10 @@ def main(args):
         print(f"len(input_hex) : {len(input_hex)}")
     input_bin = binascii.unhexlify(input_hex)
 
-    if args.xz:
+    if args.no_xz:
+        with open(args.output, "wb") as fp_out:
+            fp_out.write(input_bin)
+    else:
         tar_buffer = BytesIO()
         tar_buffer.write(input_bin)
         tar_buffer.seek(0)
@@ -24,8 +28,6 @@ def main(args):
         # mode = 'r:bz2'
         tar = tarfile.open(fileobj=tar_buffer, mode=mode)
         tar.extractall(args.output)
-    else:
-        raise NotImplementedError("args.xz must be true")
 
 
 def cli():
@@ -33,24 +35,26 @@ def cli():
     parse.add_argument(
         "input",
         type=str,
+        help="input file",
     )
     parse.add_argument(
         "--output",
         "-o",
         type=str,
+        help="output dir or file(--no_xz)",
     )
     parse.add_argument(
-        "-xz",
-        action="store_false",
-        default=True,
-        help="do `tar cfJ` first",
+        "--no_xz",
+        action="store_true",
+        default=False,
     )
 
     _args = parse.parse_args()
+
     if not _args.output:
-        _args.output = f"."
-    if not _args.xz:
-        raise NotImplementedError("-xz must be true")
+        _args.output = f"{_args.input}.unknown" if _args.no_xz else f"."
+    if _args.no_xz and os.path.isdir(_args.output):
+        _args.output = f"{_args.output}/hex2file.unknown"
     print(_args)
 
     main(_args)
