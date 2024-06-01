@@ -1,5 +1,6 @@
-import pathlib
+from __future__ import annotations
 
+import pathlib
 
 from setuptools import find_packages, setup
 

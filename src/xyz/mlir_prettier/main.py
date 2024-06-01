@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import argparse
-import re
 import logging
+import re
 
 # eg: `dense<"0xFFFF..."> : tensor<384xi32>`
 # eg: `dense<[7031, 6266, 5765, ...]> : tensor<64xi32>`
@@ -28,7 +30,7 @@ def main(args):
             if match and len(match.group(0)) > args.threshold:
                 le, ri = match.span(0)
                 logging.info(
-                    f"{aline[:le]}dense<{generate_one(aline[ri:])}>{aline[ri:-1]} // NOTE: xyz.mlir_prettier applied\n"
+                    f"{aline[:le]}dense<{generate_one(aline[ri:])}>{aline[ri:-1]} // NOTE: xyz.mlir_prettier applied\n"  # noqa: E501
                 )
             else:
                 logging.info(f"{aline}")

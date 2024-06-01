@@ -1,8 +1,9 @@
+from __future__ import annotations
+
 import argparse
 import binascii
-import tarfile
 import os
-
+import tarfile
 from io import BytesIO
 
 """
@@ -52,7 +53,7 @@ def cli():
     _args = parse.parse_args()
 
     if not _args.output:
-        _args.output = f"{_args.input}.unknown" if _args.no_xz else f"."
+        _args.output = f"{_args.input}.unknown" if _args.no_xz else "."
     if _args.no_xz and os.path.isdir(_args.output):
         _args.output = f"{_args.output}/hex2file.unknown"
     print(_args)
