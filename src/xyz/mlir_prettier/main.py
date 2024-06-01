@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 import argparse
-import re
 import logging
+import re
 
 # eg: `dense<"0xFFFF..."> : tensor<384xi32>`
 # eg: `dense<[7031, 6266, 5765, ...]> : tensor<64xi32>`

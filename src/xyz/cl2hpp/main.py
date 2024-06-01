@@ -1,6 +1,8 @@
-import os
+from __future__ import annotations
+
 import argparse
 import logging
+import os
 
 """"
 - opencl kernel code to hpp
@@ -59,7 +61,7 @@ static char const file_{src_idx}[] = R"(
 )";
 #else""")
         _encode_src(src, src_idx)
-        logging.info(rf"""
+        logging.info(r"""
 #endif""")
         logging.info(tail)
 

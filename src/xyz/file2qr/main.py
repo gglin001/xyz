@@ -1,8 +1,9 @@
+from __future__ import annotations
+
 import argparse
 import binascii
 import os
 import tarfile
-
 from io import BytesIO
 
 try:

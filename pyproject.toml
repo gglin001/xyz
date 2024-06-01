@@ -6,5 +6,19 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools_scm]
 write_to = "src/xyz/_version.py"
 
-# TODO: add ruff config
+# https://docs.astral.sh/ruff/settings/
+# https://docs.astral.sh/ruff/rules/
 # https://docs.astral.sh/ruff/configuration/
+[tool.ruff]
+fix = true
+
+[tool.ruff.lint]
+select = ["I", "E", "F"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.ruff.lint.isort]
+known-local-folder = ["src"]
+required-imports = ["from __future__ import annotations"]
