@@ -15,12 +15,6 @@ def _get_requires():
 
 if __name__ == "__main__":
     setup(
-        name="xyz",
-        description="mini cli toolkit.",
-        author="Allen Guo",
-        author_email="guosonglin001@gmail.com",
-        url="https://github.com/gglin001/xyz",
-        python_requires=">=3.8",
         install_requires=_get_requires(),
         package_dir={"": "src"},
         packages=find_packages(where="src"),
