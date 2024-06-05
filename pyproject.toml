@@ -12,6 +12,7 @@ dynamic = ["version"]
 [project.urls]
 Homepage = "https://github.com/gglin001/xyz"
 
+# TODO: support bash/zsh completion
 [project.scripts]
 "xyz.mlir_prettier" = "xyz.mlir_prettier:cli"
 "xyz.cl2hpp" = "xyz.cl2hpp:cli"
