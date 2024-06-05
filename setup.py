@@ -18,14 +18,4 @@ if __name__ == "__main__":
         install_requires=_get_requires(),
         package_dir={"": "src"},
         packages=find_packages(where="src"),
-        entry_points={
-            "console_scripts": [
-                "xyz.mlir_prettier = xyz.mlir_prettier:cli",
-                "xyz.cl2hpp = xyz.cl2hpp:cli",
-                "xyz.file2hex = xyz.file2hex:cli",
-                "xyz.hex2file = xyz.hex2file:cli",
-                "xyz.file2qr = xyz.file2qr:cli",
-                "xyz.qr2file = xyz.qr2file:cli",
-            ]
-        },
     )
