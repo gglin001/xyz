@@ -20,6 +20,7 @@ Homepage = "https://github.com/gglin001/xyz"
 "xyz.hex2file" = "xyz.hex2file:cli"
 "xyz.file2qr" = "xyz.file2qr:cli"
 "xyz.qr2file" = "xyz.qr2file:cli"
+"xyz.csvhex2file" = "xyz.csvhex2file:cli"
 
 # https://github.com/pypa/setuptools_scm
 [build-system]
