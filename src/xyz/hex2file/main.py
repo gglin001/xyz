@@ -14,6 +14,8 @@ convert hex str to file
 def main(args):
     with open(args.input, "rb") as fp_in:
         input_hex = fp_in.read()
+        # strip final newline
+        input_hex = input_hex.strip(b"\n")
         print(f"len(input_hex) : {len(input_hex)}")
     input_bin = binascii.unhexlify(input_hex)
 
