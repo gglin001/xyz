@@ -18,7 +18,7 @@ def main(args):
         csv_reader = csv.DictReader(fp_in)
         for row in csv_reader:
             input_hex += row[args.csv_column].encode()
-    input_bin = binascii.unhexlify(input_hex)
+    input_bin = binascii.a2b_base64(input_hex)
 
     if args.no_xz:
         with open(args.output, "wb") as fp_out:

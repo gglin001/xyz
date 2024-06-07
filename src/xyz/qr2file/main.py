@@ -33,7 +33,7 @@ def main(args):
         if len(input_decode) != 1:
             raise Exception("decode failed, early exit")
         input_hex += input_decode[0].text
-    input_bin = binascii.unhexlify(input_hex)
+    input_bin = binascii.a2b_base64(input_hex)
 
     if args.no_xz:
         with open(args.output, "wb") as fp_out:
