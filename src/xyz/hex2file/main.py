@@ -17,7 +17,7 @@ def main(args):
         # strip final newline
         input_hex = input_hex.strip(b"\n")
         print(f"len(input_hex) : {len(input_hex)}")
-    input_bin = binascii.unhexlify(input_hex)
+    input_bin = binascii.a2b_base64(input_hex)
 
     if args.no_xz:
         with open(args.output, "wb") as fp_out:

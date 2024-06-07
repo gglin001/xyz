@@ -17,7 +17,7 @@ def main(args):
     input_buffer.seek(0)
 
     if args.no_xz:
-        hex_bytes = binascii.hexlify(input_buffer.read())
+        hex_bytes = binascii.b2a_base64(input_buffer.read())
     else:
         tar_buffer = BytesIO()
         # mode = 'w:gz'
@@ -29,7 +29,7 @@ def main(args):
         tar.addfile(tarinfo, input_buffer)
         tar.close()
         tar_buffer.seek(0)
-        hex_bytes = binascii.hexlify(tar_buffer.read())
+        hex_bytes = binascii.b2a_base64(tar_buffer.read())
     print(f"len(hex_bytes) : {len(hex_bytes)}")
 
     with open(args.output, "w") as fp_out:
