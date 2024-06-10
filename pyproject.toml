@@ -21,6 +21,7 @@ Homepage = "https://github.com/gglin001/xyz"
 "xyz.file2qr" = "xyz.file2qr:cli"
 "xyz.qr2file" = "xyz.qr2file:cli"
 "xyz.csvhex2file" = "xyz.csvhex2file:cli"
+"xyz.split_string" = "xyz.split_string:cli"
 
 # https://github.com/pypa/setuptools_scm
 [build-system]
