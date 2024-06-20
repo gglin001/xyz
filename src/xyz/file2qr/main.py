@@ -70,7 +70,7 @@ def cli():
         "-seg",
         type=int,
         default=2300,
-        help="segment size, default=2300, check qr code sepc forv more info",
+        help="segment size, default=2300, check qr code sepc for more info",
     )
     parse.add_argument(
         "--qr_version",
