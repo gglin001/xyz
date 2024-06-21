@@ -3,6 +3,8 @@ from __future__ import annotations
 import argparse
 
 """
+# TODO: WIP
+
 convert long lines into short lines
 
 - support file input
