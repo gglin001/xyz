@@ -7,3 +7,5 @@ build/
 .DS_Store
 
 _version.py
+
+tmp/

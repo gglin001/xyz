@@ -24,7 +24,11 @@ def main(args):
         input_buffer = BytesIO(fp_in.read())
     input_buffer.seek(0)
 
-    if args.no_xz:
+    if args.is_hex:
+        hex_bytes = input_buffer.read()
+        # NOTE: clean `\n` for hex strs
+        hex_bytes = hex_bytes.replace(b"\n", b"")
+    elif args.no_xz:
         hex_bytes = binascii.b2a_base64(input_buffer.read())
     else:
         tar_buffer = BytesIO()
@@ -77,6 +81,13 @@ def cli():
         type=int,
         default=40,
         help="qr_version, default=40",
+    )
+    parse.add_argument(
+        "--is_hex",
+        "-hex",
+        action="store_true",
+        default=False,
+        help="file is hex str(lines from `file2hex`)",
     )
 
     _args = parse.parse_args()
