@@ -33,7 +33,10 @@ def main(args):
     print(f"len(hex_bytes) : {len(hex_bytes)}")
 
     with open(args.output, "w") as fp_out:
-        fp_out.write(hex_bytes.decode())
+        hex_str = hex_bytes.decode()
+        for i in range(0, len(hex_str), args.segment_size):
+            fp_out.write(hex_str[i : i + args.segment_size])
+            fp_out.write("\n")
 
 
 def cli():
@@ -53,6 +56,13 @@ def cli():
         "--no_xz",
         action="store_true",
         default=False,
+    )
+    parse.add_argument(
+        "--segment_size",
+        "-seg",
+        type=int,
+        default=2300,
+        help="segment size, default=2300, check file2qr more info",
     )
 
     _args = parse.parse_args()

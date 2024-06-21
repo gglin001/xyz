@@ -45,7 +45,8 @@ def cli():
         "--output",
         "-o",
         type=str,
-        help="output dir or file(--no_xz)",
+        default=".",
+        help="output dir or file(--no_xz), default=`.`(dir)",
     )
     parse.add_argument(
         "--no_xz",
@@ -62,10 +63,9 @@ def cli():
 
     _args = parse.parse_args()
 
-    if not _args.output:
-        _args.output = f"{_args.input}.unknown" if _args.no_xz else "."
-    if _args.no_xz and os.path.isdir(_args.output):
-        _args.output = f"{_args.output}/csvhex2file.unknown"
+    if os.path.isdir(_args.output):
+        if _args.no_xz:
+            _args.output = f"{_args.output}/csvhex2file.unknown"
     print(_args)
 
     main(_args)

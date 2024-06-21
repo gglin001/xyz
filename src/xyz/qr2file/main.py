@@ -33,12 +33,19 @@ def main(args):
         if len(input_decode) != 1:
             raise Exception("decode failed, early exit")
         input_hex += input_decode[0].text
-    input_bin = binascii.a2b_base64(input_hex)
+        # NOTE: add `\n` for hex strs, check `xyz.file2qr`
+        if args.is_hex:
+            input_hex += "\n"
 
-    if args.no_xz:
+    if args.is_hex:
+        with open(args.output, "w") as fp_out:
+            fp_out.write(input_hex)
+    elif args.no_xz:
+        input_bin = binascii.a2b_base64(input_hex)
         with open(args.output, "wb") as fp_out:
             fp_out.write(input_bin)
     else:
+        input_bin = binascii.a2b_base64(input_hex)
         tar_buffer = BytesIO()
         tar_buffer.write(input_bin)
         tar_buffer.seek(0)
@@ -60,20 +67,29 @@ def cli():
         "--output",
         "-o",
         type=str,
-        help="output dir or file(--no_xz)",
+        default=".",
+        help="output dir or file(--no_xz), default=`.`(dir)",
     )
     parse.add_argument(
         "--no_xz",
         action="store_true",
         default=False,
     )
+    parse.add_argument(
+        "--is_hex",
+        "-hex",
+        action="store_true",
+        default=False,
+        help="raw file is hex str, check `xyz.file2qr -hex`",
+    )
 
     _args = parse.parse_args()
 
-    if not _args.output:
-        _args.output = f"{_args.input}.unknown" if _args.no_xz else "."
-    if _args.no_xz and os.path.isdir(_args.output):
-        _args.output = f"{_args.output}/qr2file.unknown"
+    if os.path.isdir(_args.output):
+        if _args.is_hex:
+            _args.output = f"{_args.output}/qr2file.hex"
+        elif _args.no_xz:
+            _args.output = f"{_args.output}/qr2file.unknown"
     print(_args)
 
     main(_args)
