@@ -23,6 +23,7 @@ Homepage = "https://github.com/gglin001/xyz"
 "xyz.csvhex2file" = "xyz.csvhex2file:cli"
 # TODO: enable split_string future
 # "xyz.split_string" = "xyz.split_string:cli"
+"xyz.zsh_history_clean" = "xyz.zsh_history_clean:cli"
 
 # https://github.com/pypa/setuptools_scm
 [build-system]
