@@ -46,7 +46,9 @@ def _gen_bracket_list(alist: list):
 def _encode_src(arr: npt.NDArray, name: str):
     src_barr = bytearray(arr.tobytes())
     src_barr = list(src_barr)
-    logging.info(f"static char const {name}[] =\n{_gen_bracket_list(src_barr)};")
+    logging.info(
+        f"static unsigned char const {name}[] =\n{_gen_bracket_list(src_barr)};"
+    )
 
 
 def main(args):
