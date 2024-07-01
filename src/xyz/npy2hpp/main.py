@@ -37,7 +37,6 @@ def _gen_bracket_list(alist: list):
     ret = "{"
     for item in alist[:-1]:
         ret += f"{item}, "
-    # always append a zero
     ret += f"{alist[-1]}"
     ret += "}"
     return ret
