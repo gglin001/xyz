@@ -8,33 +8,37 @@ import shutil
 import time
 
 """
-clean `~/.zsh_history`
+- clean `~/.zsh_history`
+- keep <= `--n_lines` of history
 """
 
 
-def is_one_line_history(aline: str) -> bool:
-    if aline.startswith(": ") and not aline.endswith("\\"):
-        return True
-    return False
-
-
 def main(args):
+    is_full = False
+    lines: list[str] = []
     with open(args.input, "r") as fp_in:
         while True:
             try:
                 aline = fp_in.readline()
             except Exception as _:
-                # `readline()` may fail, just skip
+                # `readline()` may fail, just skip, related history will be discard
                 print("skiped a times `.readline()`")
                 pass
 
             if not aline:
                 break
 
-            # TODO: add an option for keeping multi lines
-            # TODO: support multi lines history(each line ends with `\`)
-            if is_one_line_history(aline):
-                logging.info(aline)
+            lines.append(aline)
+
+            if len(lines) > 1 and lines[-1].startswith(": "):
+                is_full = True
+
+            if is_full:
+                if len(lines) <= args.n_lines + 1:
+                    for line in lines[:-1]:
+                        logging.info(line)
+                is_full = False
+                lines = [lines[-1]]
 
 
 def cli():
@@ -53,16 +57,17 @@ def cli():
         type=str,
         help="output dir",
     )
+    parse.add_argument(
+        "--n_lines",
+        "-n",
+        type=int,
+        default=2,
+        help="keep <= n lines of history",
+    )
 
     _args = parse.parse_args()
-    # _args = parse.parse_args(
-    #     [
-    #         "-i=./_demos/zsh_history.backup",
-    #         "-o=./_demos/zsh_history",
-    #     ]
-    # )
-
     print(_args)
+
     if os.path.exists(_args.output):
         backup_path = f"{_args.output}.backup_{int(time.time())}"
         shutil.move(_args.output, backup_path)
