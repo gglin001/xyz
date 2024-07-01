@@ -1,0 +1,28 @@
+: 1717865698:0;fd Firefox
+: 1717865725:0;du -hs Library/Caches/Firefox/\
+
+: 1717865746:0;du -hs Library/Application\ Support/Firefox/
+: 1717899914:0;git sparse-checkout	list
+: 1717899948:0;git sparse-checkout disable\
+
+: 1718336151:0;git sparse-checkout add --no-cone \\
+  '!/clang/test' '!/llvm/unittests'\
+
+: 1718336154:0;du -d 2 -h -t 10M
+: 1718205617:0;git sparse-checkout set --no-cone \\
+  /* \\
+  '!/gdb/testsuite'\
+
+: 1719846123:0;###############################################################################\
+\
+xyz.zsh_history_clean \\
+  --n_lines 2 \\
+  -i=./_demos/zsh_history.backup \\
+  -o=./_demos/zsh_history.2\
+\
+xyz.zsh_history_clean \\
+  --n_lines 3 \\
+  -i=./_demos/zsh_history.backup \\
+  -o=./_demos/zsh_history.3\
+\
+###############################################################################\
