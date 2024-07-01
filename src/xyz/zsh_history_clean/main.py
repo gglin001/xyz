@@ -26,10 +26,14 @@ def main(args):
                 pass
 
             if not aline:
+                if len(lines) <= args.n_lines + 1:
+                    for line in lines:
+                        logging.info(line)
                 break
 
             lines.append(aline)
 
+            # TODO: is it robust enough?
             if len(lines) > 1 and lines[-1].startswith(": "):
                 is_full = True
 
