@@ -4,13 +4,10 @@ import argparse
 import logging
 
 """
-# TODO: WIP
-
 convert long lines into short lines
 
 - support file input
-- support stdio input
-- support setting splitter
+- TODO: support stdio input
 """
 
 
