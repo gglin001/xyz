@@ -21,6 +21,9 @@ def main(args):
             if not aline:
                 break
 
+            for mark in args.marks:
+                aline = aline.replace(mark, f"\n{mark}")
+
             logging.info(f"{aline}")
 
 
@@ -36,6 +39,13 @@ def cli():
         "-o",
         type=str,
         help="output dir",
+    )
+    parse.add_argument(
+        "--marks",
+        "-m",
+        type=list,
+        default=[" -", " --"],
+        help="marks, `mark` -> `\nmark`",
     )
 
     _args = parse.parse_args()
