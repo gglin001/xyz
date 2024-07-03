@@ -58,8 +58,13 @@ def parse_input(arg: str) -> tuple[3]:
 
 def main(args):
     shape, dtype, value = parse_input(args.input)
-    arr = np.array(value, shape=shape, dtype=dtype)
-    np.save(args.output, arr)
+    arr = np.zeros(shape=shape, dtype=dtype)
+    arr = arr + value
+
+    if args.output == "-":
+        np.savetxt(sys.stdout, arr)
+    else:
+        np.save(args.output, arr)
 
 
 def cli():
@@ -73,9 +78,9 @@ def cli():
     parse.add_argument(
         "--output",
         "-o",
-        # required=True,
         type=str,
-        help="output file",
+        default="-",
+        help="output file, default: `sys.stdout`",
     )
 
     _args = parse.parse_args()
@@ -87,8 +92,6 @@ def cli():
     # )
 
     print(_args)
-    if not _args.output:
-        _args.output = sys.stdout
 
     main(_args)
 
