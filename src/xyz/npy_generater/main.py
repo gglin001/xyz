@@ -1,12 +1,10 @@
 from __future__ import annotations
 
 import argparse
-import os
 import sys
 
 try:
     import numpy as np
-    import numpy.typing as npt
 except ImportError:
     raise ImportError("do `pip install numpy` first")
 
@@ -84,12 +82,6 @@ def cli():
     )
 
     _args = parse.parse_args()
-
-    # _args = parse.parse_args(
-    #     [
-    #         '--input="2x2xi32=1"',
-    #     ]
-    # )
 
     print(_args)
 
