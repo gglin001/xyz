@@ -31,6 +31,14 @@ tail = r"""
 #endif // __cplusplus
 """
 
+dtype_to_ctype = {
+    np.dtype(np.int32): "int",
+    np.dtype(np.uint32): "unsigned int",
+    np.dtype(np.float32): "float",
+    np.dtype(np.int8): "char",
+    np.dtype(np.uint8): "unsigned char",
+}
+
 
 # {1, 1}
 def _gen_bracket_list(alist: list):
@@ -43,11 +51,10 @@ def _gen_bracket_list(alist: list):
 
 
 def _encode_src(arr: npt.NDArray, name: str):
-    src_barr = bytearray(arr.tobytes())
-    src_barr = list(src_barr)
-    logging.info(
-        f"static unsigned char const {name}[] =\n{_gen_bracket_list(src_barr)};"
-    )
+    arr_list = arr.flatten().tolist()
+    ctype = dtype_to_ctype[arr.dtype]
+    code = f"static {ctype} const {name}[] =\n{_gen_bracket_list(arr_list)};"
+    logging.info(code)
 
 
 def main(args):
