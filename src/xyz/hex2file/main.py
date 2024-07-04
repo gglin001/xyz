@@ -58,6 +58,7 @@ def cli():
     if os.path.isdir(_args.output):
         if _args.no_xz:
             _args.output = f"{_args.output}/hex2file.unknown"
+
     print(_args)
 
     main(_args)

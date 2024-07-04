@@ -94,6 +94,7 @@ def cli():
 
     if not _args.output:
         _args.output = f"{_args.input}.qr"
+
     print(_args)
 
     os.makedirs(_args.output, exist_ok=True)

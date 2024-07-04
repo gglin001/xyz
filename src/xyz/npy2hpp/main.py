@@ -92,6 +92,7 @@ def cli():
         _args.output = f"{_args.input}.hpp"
     if not _args.name:
         _args.name = os.path.splitext(os.path.basename(_args.input))[0]
+
     print(_args)
 
     file_handler = logging.FileHandler(_args.output, mode="w")

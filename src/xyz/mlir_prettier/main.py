@@ -60,6 +60,7 @@ def cli():
 
     if not _args.output:
         _args.output = f"{_args.input}.pretty.mlir"
+
     print(_args)
 
     file_handler = logging.FileHandler(_args.output, mode="w")
