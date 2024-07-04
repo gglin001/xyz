@@ -16,20 +16,6 @@ except ImportError:
 """
 
 
-"""
-note:
-
-scalar value
-e.g.: --input="3.14"
-
-buffer:
-[shape]xtype=[value]
-e.g.: --input="2x2xi32=1 2 3 4"
-2x2xi32=[[1 2][3 4]]
-2x2xi32=@some/file.bin
-"""
-
-
 type_to_dtype = {
     "i32": np.dtype(np.int32),
     "int32": np.dtype(np.int32),
@@ -64,6 +50,12 @@ def gen_array(arg: str) -> npt.NDArray:
     value = np.array(ri, dtype=dtype)
     arr = np.zeros(shape=shape, dtype=dtype)
     arr = arr + value
+
+    # TODO: `-i "2x2xi32=1 2 3 4"` ?
+    # TODO: `-i "2x2xi32=[[1 2][3 4]]"` ?
+    # TODO: `-i "2x2xi32=@some/file.bin"` ?
+    # TODO: `-i 2x2xi32=#json/string` ?
+
     return arr
 
 
