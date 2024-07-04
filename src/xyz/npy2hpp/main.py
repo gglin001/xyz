@@ -51,6 +51,11 @@ def _gen_bracket_list(alist: list):
 
 
 def _encode_src(arr: npt.NDArray, name: str):
+    code = f"// shape={arr.shape}, dtype={arr.dtype}, size={arr.size}"
+    logging.info(code)
+    code = f"#define {name.upper()}__SIZE {arr.size}"
+    logging.info(code)
+
     arr_list = arr.flatten().tolist()
     ctype = dtype_to_ctype[arr.dtype]
     code = f"static {ctype} const {name}[] =\n{_gen_bracket_list(arr_list)};"
@@ -80,6 +85,7 @@ def cli():
     )
     parse.add_argument(
         "--name",
+        "-n",
         type=str,
         help="name of target array, default set to input filename",
     )
