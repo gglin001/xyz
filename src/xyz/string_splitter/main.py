@@ -18,7 +18,7 @@ def main(args):
             if not aline:
                 break
 
-            for mark in args.marks:
+            for mark in args.mark:
                 aline = aline.replace(mark, f"\n{mark}")
 
             logging.info(f"{aline}")
@@ -38,17 +38,19 @@ def cli():
         help="output dir",
     )
     parse.add_argument(
-        "--marks",
+        "--mark",
         "-m",
-        type=list,
-        default=[" -", " --"],
-        help="marks, `mark` -> `\nmark`",
+        action="append",
+        help='mark, `mark` -> `\\n + mark`. if no set, will be [" -", " --"]',
     )
 
     _args = parse.parse_args()
 
     if not _args.output:
         _args.output = f"{_args.input}.split"
+    if not _args.mark:
+        _args.mark = [" -", " --"]
+
     print(_args)
 
     file_handler = logging.FileHandler(_args.output, mode="w")
