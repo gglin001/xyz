@@ -70,6 +70,7 @@ def cli():
     )
 
     _args = parse.parse_args()
+
     print(_args)
 
     if os.path.exists(_args.output):

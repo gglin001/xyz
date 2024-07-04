@@ -5,6 +5,7 @@ import sys
 
 try:
     import numpy as np
+    import numpy.typing as npt
 except ImportError:
     raise ImportError("do `pip install numpy` first")
 
@@ -12,20 +13,6 @@ except ImportError:
 """"
 - numpy generater from args
 - TODO: support full args from `iree-run-module`
-"""
-
-
-"""
-note:
-
-scalar value
-e.g.: --input="3.14"
-
-buffer:
-[shape]xtype=[value]
-e.g.: --input="2x2xi32=1 2 3 4"
-2x2xi32=[[1 2][3 4]]
-2x2xi32=@some/file.bin
 """
 
 
@@ -41,26 +28,46 @@ type_to_dtype = {
 }
 
 
-def parse_input(arg: str) -> tuple[3]:
-    # TODO: support `--input="2x2xi32=1"` only for now
-
+def gen_array(arg: str) -> npt.NDArray:
     arg = arg.strip('"').strip("'")
-    left, right = arg.split("=")
 
-    le = left.split("x")
-    shape = [int(x) for x in le[:-1]]
-    dtype = type_to_dtype[le[-1]]
-    value = np.array(right, dtype=dtype)
-    return (shape, dtype, value)
+    # `-i i32=1` / `-i 1`
+    if "x" not in arg:
+        if "=" in arg:
+            le, ri = arg.split("=")
+            dtype = type_to_dtype[le]
+            value = np.array(ri, dtype=dtype)
+            return value
+        else:
+            value = np.array(eval(arg))
+            return value
 
-
-def main(args):
-    shape, dtype, value = parse_input(args.input)
+    # `-i 2x2xi32=1`
+    le, ri = arg.split("=")
+    ll = le.split("x")
+    shape = [int(x) for x in ll[:-1]]
+    dtype = type_to_dtype[ll[-1]]
+    value = np.array(ri, dtype=dtype)
     arr = np.zeros(shape=shape, dtype=dtype)
     arr = arr + value
 
+    # TODO: `-i "2x2xi32=1 2 3 4"` ?
+    # TODO: `-i "2x2xi32=[[1 2][3 4]]"` ?
+    # TODO: `-i "2x2xi32=@some/file.bin"` ?
+    # TODO: `-i 2x2xi32=#json/string` ?
+
+    return arr
+
+
+def main(args):
+    arr = gen_array(args.input)
+
     if args.output == "-":
-        np.savetxt(sys.stdout, arr)
+        print(f"shape={arr.shape}, dtype={arr.dtype}", file=sys.stdout)
+        if arr.shape:
+            np.savetxt(sys.stdout, arr)
+        else:
+            np.savetxt(sys.stdout, arr.reshape([1]))
     else:
         np.save(args.output, arr)
 
@@ -71,7 +78,7 @@ def cli():
         "--input",
         "-i",
         type=str,
-        help="inputs",
+        help="input, eg: `-i=2x2xi32=1`, `-i=`3.14`, `-i=i32=`3.14`",
     )
     parse.add_argument(
         "--output",

@@ -90,6 +90,7 @@ def cli():
             _args.output = f"{_args.output}/qr2file.hex"
         elif _args.no_xz:
             _args.output = f"{_args.output}/qr2file.unknown"
+
     print(_args)
 
     main(_args)
