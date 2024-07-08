@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import shutil
 
 """
 convert long lines into short lines
@@ -38,6 +39,13 @@ def cli():
         help="output dir",
     )
     parse.add_argument(
+        "--inplace",
+        "-i",
+        action="store_true",
+        default=False,
+        help="inplace mode",
+    )
+    parse.add_argument(
         "--mark",
         "-m",
         action="append",
@@ -62,6 +70,9 @@ def cli():
     )
 
     main(_args)
+
+    if _args.inplace:
+        shutil.move(_args.output, _args.input)
 
 
 if __name__ == "__main__":
