@@ -79,6 +79,8 @@ def _encode_src(arr: npt.NDArray, args):
 
 def main(args):
     arr = np.load(args.input)
+    if args.u8:
+        arr = arr.view(np.uint8)
 
     logging.info(header)
     _encode_src(arr, args)
@@ -109,6 +111,12 @@ def cli():
         action="store_true",
         default=False,
         help="use hex or not",
+    )
+    parse.add_argument(
+        "--u8",
+        action="store_true",
+        default=False,
+        help="use u8(uint8) or not",
     )
 
     _args = parse.parse_args()
