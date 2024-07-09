@@ -50,7 +50,18 @@ def _gen_bracket_list(alist: list):
     return ret
 
 
-def _encode_src(arr: npt.NDArray, name: str):
+# {0x1, 0x1}
+def _gen_bracket_list_in_hex(alist: list):
+    ret = "{"
+    for item in alist[:-1]:
+        ret += f"{hex(item)}, "
+    ret += f"{hex(alist[-1])}"
+    ret += "}"
+    return ret
+
+
+def _encode_src(arr: npt.NDArray, args):
+    name: str = args.name
     code = f"// shape={arr.shape}, dtype={arr.dtype}, size={arr.size}"
     logging.info(code)
     code = f"#define {name.upper()}__SIZE {arr.size}"
@@ -58,7 +69,11 @@ def _encode_src(arr: npt.NDArray, name: str):
 
     arr_list = arr.flatten().tolist()
     ctype = dtype_to_ctype[arr.dtype]
-    code = f"static {ctype} const {name}[] =\n{_gen_bracket_list(arr_list)};"
+    if args.hex:
+        content = _gen_bracket_list_in_hex(arr_list)
+    else:
+        content = _gen_bracket_list(arr_list)
+    code = f"static {ctype} const {name}[] =\n{content};"
     logging.info(code)
 
 
@@ -66,7 +81,7 @@ def main(args):
     arr = np.load(args.input)
 
     logging.info(header)
-    _encode_src(arr, args.name)
+    _encode_src(arr, args)
     logging.info(tail)
 
 
@@ -88,6 +103,12 @@ def cli():
         "-n",
         type=str,
         help="name of target array, default set to input filename",
+    )
+    parse.add_argument(
+        "--hex",
+        action="store_true",
+        default=False,
+        help="use hex or not",
     )
 
     _args = parse.parse_args()
