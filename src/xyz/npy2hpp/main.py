@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import binascii
 import logging
 import os
 
@@ -80,6 +81,12 @@ def _encode_src(arr: npt.NDArray, args):
 def main(args):
     if args.in_bin:
         arr = np.fromfile(args.input)
+    elif args.in_hex:
+        with open(args.input, "r") as fp_in:
+            input_hex = fp_in.read()
+            input_hex = input_hex.strip("\n")
+        input_bin = binascii.unhexlify(input_hex)
+        arr = np.frombuffer(input_bin, dtype=np.uint8)
     else:
         arr = np.load(args.input)
 
@@ -114,7 +121,13 @@ def cli():
         "--in_bin",
         action="store_true",
         default=False,
-        help="input file is a bin",
+        help="input file is bin",
+    )
+    parse.add_argument(
+        "--in_hex",
+        action="store_true",
+        default=False,
+        help="input file is hex, must(default) enable `--u8`",
     )
     parse.add_argument(
         "--hex",
@@ -137,6 +150,8 @@ def cli():
         _args.output = f"{_args.input}.hpp"
     if not _args.name:
         _args.name = os.path.splitext(os.path.basename(_args.input))[0]
+    if _args.in_hex:
+        _args.u8 = True
 
     print(_args)
 
