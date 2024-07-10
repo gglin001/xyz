@@ -78,7 +78,11 @@ def _encode_src(arr: npt.NDArray, args):
 
 
 def main(args):
-    arr = np.load(args.input)
+    if args.in_bin:
+        arr = np.fromfile(args.input)
+    else:
+        arr = np.load(args.input)
+
     if args.u8:
         arr = arr.view(np.uint8)
 
@@ -105,6 +109,12 @@ def cli():
         "-n",
         type=str,
         help="name of target array, default set to input filename",
+    )
+    parse.add_argument(
+        "--in_bin",
+        action="store_true",
+        default=False,
+        help="input file is a bin",
     )
     parse.add_argument(
         "--hex",
