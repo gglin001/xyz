@@ -25,6 +25,7 @@ Homepage = "https://github.com/gglin001/xyz"
 "xyz.npy2hpp" = "xyz.npy2hpp:cli"
 "xyz.zsh_history_clean" = "xyz.zsh_history_clean:cli"
 "xyz.string_splitter" = "xyz.string_splitter:cli"
+"xyz.llvmir_dump_classifier" = "xyz.llvmir_dump_classifier:cli"
 
 # https://github.com/pypa/setuptools_scm
 [build-system]
