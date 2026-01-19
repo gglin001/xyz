@@ -75,9 +75,9 @@ class CMakeBuild(build_ext):
 
 
 if __name__ == "__main__":
-    with_cmake = int(os.environ.get("WITH_CMAKE", 0))
+    with_cmake = bool(int(os.environ.get("WITH_CMAKE", 0)))
     extensions = []
-    if not with_cmake:
+    if with_cmake:
         extensions.append(CMakeExtension("xyz._C"))
 
     cmdclass = {"build_ext": CMakeBuild}
