@@ -59,7 +59,7 @@ fix = true
 
 [tool.ruff.lint]
 select = ["I", "E", "F"]
-ignore = []
+ignore = ["E501"]
 
 [tool.ruff.format]
 quote-style = "double"
