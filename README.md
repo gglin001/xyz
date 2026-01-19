@@ -1,7 +1,6 @@
 # xyz
 
 ```bash
-pip install -e .
+export XYZ_WITH_CMAKE=1
+uv pip install --system -e .
 ```
-
-check `setup.py` for `entry_points`

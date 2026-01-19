@@ -37,8 +37,10 @@ class CMakeBuild(build_ext):
         ]
         build_args = []
         # Adding CMake arguments set as environment variable
-        if "CMAKE_ARGS" in os.environ:
-            cmake_args += [item for item in os.environ["CMAKE_ARGS"].split(" ") if item]
+        if "XYZ_CMAKE_ARGS" in os.environ:
+            cmake_args += [
+                item for item in os.environ["XYZ_CMAKE_ARGS"].split(" ") if item
+            ]
 
         try:
             import ninja  # noqa: F401
@@ -75,7 +77,7 @@ class CMakeBuild(build_ext):
 
 
 if __name__ == "__main__":
-    with_cmake = bool(int(os.environ.get("WITH_CMAKE", 0)))
+    with_cmake = bool(int(os.environ.get("XYZ_WITH_CMAKE", 0)))
     extensions = []
     if with_cmake:
         extensions.append(CMakeExtension("xyz._C"))
