@@ -1,6 +1,5 @@
 exclude: |
   (?x)(
-      .cmake-format.py |
       .vscode/(.)* |
       LICENSE
   )
@@ -26,8 +25,19 @@ repos:
       - id: ruff
         args: [--fix]
       - id: ruff-format
+  - repo: local
+    hooks:
+      - id: clang-format
+        name: clang-format
+        language: python
+        entry: clang-format -i --style=file
+        types_or: [c, c++]
+        additional_dependencies:
+          - clang-format==21.1.8
   # TODO: enable mypy
   # - repo: https://github.com/pre-commit/mirrors-mypy
   #   rev: v1.10.0
   #   hooks:
   #     - id: mypy
+
+  # TODO: add more python tools https://github.com/PyCQA
