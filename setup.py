@@ -11,12 +11,6 @@ from setuptools.command.build_ext import build_ext
 HERE = pathlib.Path(__file__).parent.resolve()
 
 
-def _get_requires():
-    with open("requirements.txt", "r") as f:
-        install_requires = f.readlines()
-    return install_requires
-
-
 class CMakeExtension(Extension):
     def __init__(self, name, sourcedir=""):
         Extension.__init__(self, name, sources=[])
@@ -41,17 +35,6 @@ class CMakeBuild(build_ext):
             cmake_args += [
                 item for item in os.environ["XYZ_CMAKE_ARGS"].split(" ") if item
             ]
-
-        try:
-            import ninja  # noqa: F401
-
-            ninja_executable_path = os.path.join(ninja.BIN_DIR, "ninja")
-            cmake_args += [
-                "-GNinja",
-                f"-DCMAKE_MAKE_PROGRAM:FILEPATH={ninja_executable_path}",
-            ]
-        except ImportError:
-            raise Exception("please install ninja first.")
 
         build_lib = self.build_temp
         cmd = ["cmake"] + cmake_args + [f"-S{HERE}", f"-B{build_lib}"]
@@ -84,7 +67,6 @@ if __name__ == "__main__":
 
     cmdclass = {"build_ext": CMakeBuild}
     setup(
-        install_requires=_get_requires(),
         ext_modules=extensions,
         cmdclass=cmdclass,
         package_dir={"": "src"},
