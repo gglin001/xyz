@@ -16,6 +16,7 @@ Homepage = "https://github.com/gglin001/xyz"
 "xyz.mlir_prettier" = "xyz.mlir_prettier:cli"
 "xyz.mlir_erase_transform" = "xyz.mlir_erase_transform:cli"
 "xyz.llvmir_dump_classifier" = "xyz.llvmir_dump_classifier:cli"
+"xyz.mlir_strip_debuginfo" = "xyz.mlir_strip_debuginfo:cli"
 #
 "xyz.file2hex" = "xyz.file2hex:cli"
 "xyz.hex2file" = "xyz.hex2file:cli"
